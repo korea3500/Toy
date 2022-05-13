@@ -358,5 +358,5 @@ async def 팁_error(ctx, error):
 #     await ctx.send("등록되지 않은 명령어입니다. !help 를 확인해주세요!")
 #     await ctx.send(embed=discord.Embed(title="Coffee guide",colour = 0x2EFEF7, description = url))    
 
-token = 'OTIyNzY3MTI3MzgxOTM0MDkx.YcGP2w.geSciam0mPvDLmY85MRXG25oJ_I'
+token = ''
 app.run(token)
