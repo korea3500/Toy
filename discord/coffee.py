@@ -34,28 +34,28 @@ import glob
 #     return item_p + item2_p # 장착 유물 방어구
 
 
-def item_croll(soup) :
-    투구 = soup.select_one('#tab-equips > div > a.char-equip.equip-1 > div > div > h4 > span').get_text()
-    견장 = soup.select_one('#tab-equips > div > a.char-equip.equip-5 > div > div > h4 > span').get_text()
-    상의 = soup.select_one('#tab-equips > div > a.char-equip.equip-2 > div > div > h4 > span').get_text()
-    하의 = soup.select_one('#tab-equips > div > a.char-equip.equip-3 > div > div > h4 > span').get_text()
-    장갑 = soup.select_one('#tab-equips > div > a.char-equip.equip-4 > div > div > h4 > span').get_text()
-    무기 = soup.select_one('#tab-equips > div > a.char-equip.equip-0 > div > div > h4 > span').get_text()
-    return 투구, 견장, 상의, 하의, 장갑, 무기
+# def item_croll(soup) :
+#     투구 = soup.select_one('#tab-equips > div > a.char-equip.equip-1 > div > div > h4 > span').get_text()
+#     견장 = soup.select_one('#tab-equips > div > a.char-equip.equip-5 > div > div > h4 > span').get_text()
+#     상의 = soup.select_one('#tab-equips > div > a.char-equip.equip-2 > div > div > h4 > span').get_text()
+#     하의 = soup.select_one('#tab-equips > div > a.char-equip.equip-3 > div > div > h4 > span').get_text()
+#     장갑 = soup.select_one('#tab-equips > div > a.char-equip.equip-4 > div > div > h4 > span').get_text()
+#     무기 = soup.select_one('#tab-equips > div > a.char-equip.equip-0 > div > div > h4 > span').get_text()
+#     return 투구, 견장, 상의, 하의, 장갑, 무기
 
-def stat_croll(soup) :
+# def stat_croll(soup) :
 
-    공격력 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div.row.pt-1.pb-0.ps-0.pe-0.m-0.mb-2 > div:nth-child(1) > span > span.text-grade5').get_text()
-    최대생명력 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div.row.pt-1.pb-0.ps-0.pe-0.m-0.mb-2 > div:nth-child(2) > span.text-grade5').get_text()
+#     공격력 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div.row.pt-1.pb-0.ps-0.pe-0.m-0.mb-2 > div:nth-child(1) > span > span.text-grade5').get_text()
+#     최대생명력 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div.row.pt-1.pb-0.ps-0.pe-0.m-0.mb-2 > div:nth-child(2) > span.text-grade5').get_text()
 
-    치명 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(4) > div:nth-child(1) > span > span.text-grade5').get_text()
-    특화 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(4) > div:nth-child(2) > span > span.text-grade5').get_text()
-    제압 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(5) > div:nth-child(1) > span > span.text-grade5').get_text()
-    신속 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(5) > div:nth-child(2) > span > span.text-grade5').get_text()
-    인내 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(6) > div:nth-child(1) > span > span.text-grade5').get_text()
-    숙련 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(6) > div:nth-child(2) > span > span.text-grade5').get_text()
+#     치명 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(4) > div:nth-child(1) > span > span.text-grade5').get_text()
+#     특화 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(4) > div:nth-child(2) > span > span.text-grade5').get_text()
+#     제압 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(5) > div:nth-child(1) > span > span.text-grade5').get_text()
+#     신속 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(5) > div:nth-child(2) > span > span.text-grade5').get_text()
+#     인내 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(6) > div:nth-child(1) > span > span.text-grade5').get_text()
+#     숙련 = soup.select_one('#qul-box-1 > div.qul-box-1-wrap.pt-2.pb-2.ps-1.pe-1.rounded.shadow-sm.bg-theme-4.text-left > div > div:nth-child(6) > div:nth-child(2) > span > span.text-grade5').get_text()
 
-    return 공격력, 최대생명력, 제압, 신속, 인내, 숙련, 치명, 특화
+#     return 공격력, 최대생명력, 제압, 신속, 인내, 숙련, 치명, 특화
 
 def engraving(soup) :
     item = soup.select('#qul-box-3 > div > div > div')[0].get_text().split('\n\xa0')
@@ -203,7 +203,7 @@ async def 검색(ctx, char_id) :
         embed.add_field(name="공격력", value=stat[0], inline=True)
         embed.add_field(name="최대생명력", value=stat[1], inline=True)
 
-        embed.add_field(name = '\n==========================\n', value = '\u200b', inline = False)
+        embed.add_field(name = '\n==========================\n', value = '\u200b', inline = False)     
         embed.add_field(name="각인 효과", value = engraving(soup), inline = False)
         embed.set_footer(text="")
         await ctx.send(embed=embed)
@@ -284,7 +284,7 @@ async def 이모티콘(ctx, char) :
         file_name = image_df[image_df['key'] == char]['path'].tolist()[0]
 #         print(file_name)
         file = discord.File(dir_path + file_name, filename = char + ".png")
-#         await ctx.message.channel.purge(limit = int(1))
+        await ctx.message.channel.purge(limit = int(1))
         await ctx.send(file = file)
     else :
         await ctx.send("현재는 사용할 수 없는 이모티콘입니다.")
@@ -318,7 +318,45 @@ async def 명령어(ctx, char) :
         
         await ctx.send("작업 중")
     
+
+@app.command(pass_context= True)
 async def 총쏘는진첩이(ctx) :
     await ctx.send("건슬링어 짱짱쌔요!")
+    
+@app.command(pass_context= True)
+async def 디에스공(ctx) :
+    await ctx.send("고백살인마")
 
     
+@명령어.error
+async def 명령어_error(ctx, error) :
+    url = 'https://korea3500.notion.site/Coffee-5bb06765136f49e39f645b1f61e37651'
+    await ctx.send(embed=discord.Embed(title="Coffee guide",colour = 0x2EFEF7, description = url))    
+
+@삭제.error
+async def 삭제_error(ctx, error) :
+    if isinstance(error, commands.MissingRequiredArgument) :
+        await ctx.send("해당 명령어는 !삭제 {줄}로 사용 가능합니다.")
+
+@이모티콘.error
+async def 이모티콘_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+#         await ctx.send("사용할 이모티콘의 이름을 입력 해주세요!")
+        await ctx.send(', '.join(image_df['key']))
+        
+        
+@팁.error
+async def 팁_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        tip_listdir = os.listdir("C:/Users/kyeongmin/Desktop/labs/private/discord/images/팁")
+        await ctx.send("사용할 팁의 이름을 입력 해주세요! !팁 {팁}\n\n사용가능한 팁 : \n" + ', '.join(tip_df['key']))
+        
+        
+# @app.error
+# async def app_error(ctx, error) :
+#     url = 'https://korea3500.notion.site/Coffee-5bb06765136f49e39f645b1f61e37651'
+#     await ctx.send("등록되지 않은 명령어입니다. !help 를 확인해주세요!")
+#     await ctx.send(embed=discord.Embed(title="Coffee guide",colour = 0x2EFEF7, description = url))    
+
+token = 'OTIyNzY3MTI3MzgxOTM0MDkx.YcGP2w.geSciam0mPvDLmY85MRXG25oJ_I'
+app.run(token)
