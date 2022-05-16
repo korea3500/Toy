@@ -16,6 +16,7 @@ import logging
 import time
 import nest_asyncio
 import glob
+import numpy as np
 
 # def item_croll(soup) :
 #     regexp = re.compile('[+\d]+\s[가-힣+\s]+')
@@ -251,7 +252,7 @@ async def 재생(ctx, *, char) :
         voice.play(discord.FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
         voice.is_playing()
     else:
-        await ctx.send("노래 종료 후 사용해 주세요. ex) !노래끄기")
+        await ctx.send("노래 종료 후 사용해 주세요. !노래끄기")
         
     if char == "끄기" :
         await app.voice_clients[0].disconnect()
@@ -335,8 +336,8 @@ async def 계산기(ctx, char) :
     
     
     char = int(char)
-    quadro_optimal_value = char * discount_factor * 3/4
-    octa_optimal_value = char * discount_factor * 7/8
+    quadro_optimal_value = np.round(char * discount_factor * 3/4, 2)
+    octa_optimal_value = np.round(char * discount_factor * 7/8, 2)
 
     ### generating https://cog-creators.github.io/discord-embed-sandbox/  ###
     embed=discord.Embed(title="로아 경매 이득금 계산기", url="http://github.com/korea3500", description="입력한 금액 : " + str(char))
@@ -344,9 +345,41 @@ async def 계산기(ctx, char) :
     embed.add_field(name="8인 공격대 기준", value = octa_optimal_value, inline=True)
     await ctx.send(embed=embed)
 
+@app.command(pass_context = True)
+async def 사사게(ctx, *, char) :
+#     print(char)
+    search_id = char.replace(' ', '+')
+    
+    inven_url = 'https://www.inven.co.kr/board/lostark/5355?query=list&p=1&sterm=&name=subject&keyword='
+    html = requests.get(inven_url + search_id)
+    soup = BeautifulSoup(html.text, 'html.parser')
+    result = soup.find_all("a", class_="subject-link")
+
+    title_list = []
+    url_list = []
+    for idx, i in enumerate(result) :
+        title = i.get_text()
+        title_list.append(''.join(title.replace('    ', '').split('\n')))
+        url_list.append(result[idx]['href'])
+#     print(title_list, url_list)
+    if len(title_list) == 1 :
+        embed=discord.Embed(title="인벤 사사게 검색", url= inven_url + search_id, description="검색한 키워드 : " + char)
+        embed.add_field(name = "검색 결과가 없습니다!", value = url_list[0], inline=False)
+        await ctx.send(embed=embed)
+    
+    else :
+        embed=discord.Embed(title="인벤 사사게 검색", url= inven_url + search_id, description="검색한 키워드 : " + char)
+        for idx in range(1, len(title_list)) : # 인벤 사사게 검색 중 기본 게시물인 사사게 정책 게시글을 표시하지 않기 위함
+#             print(title_list[idx])
+            embed.add_field(name = title_list[idx], value = url_list[idx], inline=False)
+
+    #     embed.set_footer(text = "add footer")
+        await ctx.send(embed=embed)
 
     
 
+
+    
 @명령어.error
 async def 명령어_error(ctx, error) :
     url = 'https://korea3500.notion.site/Coffee-5bb06765136f49e39f645b1f61e37651'
@@ -377,7 +410,17 @@ async def 계산기_error(ctx, error) :
     if isinstance(error, commands.CommandInvokeError) :
         await ctx.send("경매 금액은 반드시 숫자여야 합니다.\nex) !계산기 6000")
         
+@사사게.error
+async def 사사게_error(ctx, error) :
+    if isinstance(error, commands.MissingRequiredArgument) :
+        await ctx.send("검색 키워드를 입력해 주세요!\nex) !사사게 커피왜캐맛있음")
+        
+        
+# @app.error
+# async def app_error(ctx, error) :
+#     url = 'https://korea3500.notion.site/Coffee-5bb06765136f49e39f645b1f61e37651'
+#     await ctx.send("등록되지 않은 명령어입니다. !help 를 확인해주세요!")
+#     await ctx.send(embed=discord.Embed(title="Coffee guide",colour = 0x2EFEF7, description = url))    
 
-    
-token = 'your token'
+token = '__TOKEN__'
 app.run(token)
