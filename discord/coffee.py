@@ -116,6 +116,13 @@ def queue(id): #음악 재생용 큐
         playerlist[id] = player
         del playlist[0]
         player.start()
+        
+def owner_check(ctx) :
+    if '360476636786720768' == str(ctx.message.author.id) :
+        return True
+    else :
+        return False
+    
 
 
 
@@ -156,6 +163,7 @@ for idx, i in enumerate(tip_df.index) :
 #####
 
 app = commands.Bot(command_prefix = "!")
+client = discord.Client
 
 @app.event
 async def on_ready():
@@ -302,6 +310,17 @@ async def 팁(ctx, char) :
         await ctx.send(file = file)
     else :
         await ctx.send("존재하지 않는 이미지입니다.")
+
+# @app.command(pass_context = True)
+# async def 고고학(ctx, char) :
+#     char = char.str.split(" ")
+#     blue = char[0]
+#     green = char[1]
+#     general = char[2]
+#     VAT = 400 # 상급 오레하 28원 기준
+    
+    
+    
         
         
 @app.command(pass_context = True)
@@ -318,15 +337,7 @@ async def 명령어(ctx, char) :
     if "이모티콘" in char :
         
         await ctx.send("작업 중")
-    
 
-@app.command(pass_context= True)
-async def 총쏘는진첩이(ctx) :
-    await ctx.send("건슬링어 짱짱쌔요!")
-    
-@app.command(pass_context= True)
-async def 디에스공(ctx) :
-    await ctx.send("고백살인마")
     
 @app.command(pass_context = True)
 async def 계산기(ctx, char) :
@@ -338,11 +349,25 @@ async def 계산기(ctx, char) :
     char = int(char)
     quadro_optimal_value = np.round(char * discount_factor * 3/4, 2)
     octa_optimal_value = np.round(char * discount_factor * 7/8, 2)
+    
+    quadro_benefit_value = np.round(quadro_optimal_value * (10/11))
+    octa_benefit_value = np.round(octa_optimal_value * (10/11))
+    
 
     ### generating https://cog-creators.github.io/discord-embed-sandbox/  ###
-    embed=discord.Embed(title="로아 경매 이득금 계산기", url="http://github.com/korea3500", description="입력한 금액 : " + str(char))
+    embed=discord.Embed(title="로아 경매 분배금 계산기", url="http://github.com/korea3500", description="입력한 금액 : " + str(char))
+    embed.add_field(name = "손익분기점", value = 'result = ' + str(char) + ' * {(n-1) / n}', inline = False)
     embed.add_field(name="4인 파티 기준", value = quadro_optimal_value, inline=True)
-    embed.add_field(name="8인 공격대 기준", value = octa_optimal_value, inline=True)
+    embed.add_field(name="8인 공격대 기준\n", value = octa_optimal_value, inline=True)
+    
+    embed.add_field(name="\u200b", value = '\u200b', inline=False)
+    
+    embed.add_field(name = "입찰적정가", value = 'result = ' + str(char) + ' * {(n-1) / n} * (10/11)', inline = False)
+    embed.add_field(name="4인 파티 기준", value = quadro_benefit_value, inline=True)
+    embed.add_field(name="8인 공격대 기준", value = octa_benefit_value, inline=True)
+    
+#     embed.set_footer(text="수식 오류 or 문의사항 발생 시 알려주시면 빠르게 수정하겠습니다")
+    
     await ctx.send(embed=embed)
 
 @app.command(pass_context = True)
@@ -375,6 +400,175 @@ async def 사사게(ctx, *, char) :
 
     #     embed.set_footer(text = "add footer")
         await ctx.send(embed=embed)
+        
+        
+'''
+    Server Management Function
+    
+    server_name
+    server_owner
+    server_owner_id
+    channel
+    role
+    guild
+    member_count
+    my_id
+    leave *
+    bans *
+    unban *
+    ban *
+    kick *
+    invite_link *
+    bot_invite_link *
+    participate_channel_list *
+    participate_liist *
+    participate_list_all *
+    leave_guild *
+    
+    * : need Bot owner ID
+    
+'''
+        
+@app.command(pass_context = True)
+async def server_name(ctx) :
+    await ctx.send(ctx.guild.name)\
+    
+@app.command(pass_context = True)
+async def server_owner(ctx) :
+    await ctx.send(ctx.guild.owner)
+    
+@app.command(pass_context = True)
+async def server_owner_id(ctx) :
+    await ctx.send(ctx.guild.owner_id)
+    
+@app.command(pass_context = True)
+async def channel(ctx) :
+    await ctx.send(ctx.guild.channels)
+
+    
+@app.command(pass_context = True)
+async def role(ctx) :
+    await ctx.send(ctx.guild.roles)
+    
+@app.command(pass_context = True)
+async def guild(ctx) :
+    await ctx.send(ctx.message.guild)
+
+    
+@app.command(pass_context = True)
+async def member_count(ctx) :
+    await ctx.send(ctx.guild.member_count)
+    
+@app.command(pass_context = True)
+async def my_id(ctx) :
+    await ctx.send(ctx.message.author.id)
+    
+@app.command(pass_context = True)
+async def leave(ctx) :
+    if owner_check :
+        await ctx.guild.leave()
+    else :
+        await ctx.send("Forbidden Error")
+    
+@app.command(pass_context = True)
+async def bans(ctx) :
+    if owner_check :
+        await ctx.send(await ctx.guild.bans())
+    else :
+        await ctx.send("Forbidden Error")
+    
+@app.command(pass_context = True)
+async def kick(ctx, char) :
+    if owner_check :
+        await ctx.guild.kick(char, reason=None)
+    else :
+        await ctx.send("Forbidden Error")
+    
+@app.command(pass_context = True)
+async def ban(ctx, char) :
+    if owner_check :
+        await ctx.guild.ban(char, reason=None, delete_message_days=30)
+    else :
+        await ctx.send("Forbidden Error")
+        
+    
+@app.command(pass_context = True)
+async def unban(ctx, char) :    
+    
+    if owner_check :
+        await ctx.guild.unban(char, reason=None)
+    else :
+        await ctx.send("Forbidden Error")
+        
+
+    
+@app.command(pass_context = True)
+async def invite_link(ctx) :
+    if owner_check :
+        
+        await ctx.send(await ctx.channel.create_invite(max_uses = 1, unique = True))
+    else :
+        await ctx.send("Forbidden Error")
+        
+        
+@app.command(pass_context = True)
+async def bot_invite_link(ctx) :
+    if owner_check :
+        invite_link = ''
+        await ctx.send(invite_link)
+    else :
+        await ctx.send("Forbidden Error")
+    
+    
+@app.command(pass_context = True)
+async def participate_channel_list(ctx) :
+    if owner_check :
+#         servers = client.guilds
+        servers = app.get_all_channels()
+    
+        for server in list(servers):
+            await ctx.send(server)
+        
+    else :
+        await ctx.send("Forbidden Error")
+        
+        
+@app.command(pass_context = True)
+async def participate_list(ctx) :
+    if owner_check :
+        guilds = app.guilds
+        for guild in guilds :
+            await ctx.send(guild)
+        
+    else :
+        await ctx.send("Forbidden Error")
+        
+@app.command(pass_context = True)
+async def participate_list_all(ctx) :
+    if owner_check :
+        guilds = app.guilds
+        await ctx.send(guilds)
+        
+    else :
+        await ctx.send("Forbidden Error")
+        
+        
+@app.command(pass_context = True)
+async def leave_guild(ctx, *, char) :
+    if owner_check :
+        await app.leave_guild(char)
+        
+    else :
+        await ctx.send("Forbidden Error")
+        
+        
+        
+    
+
+    
+        
+        
+
 
     
 
@@ -422,5 +616,5 @@ async def 사사게_error(ctx, error) :
 #     await ctx.send("등록되지 않은 명령어입니다. !help 를 확인해주세요!")
 #     await ctx.send(embed=discord.Embed(title="Coffee guide",colour = 0x2EFEF7, description = url))    
 
-token = '__TOKEN__'
+token = 'TOKEN'
 app.run(token)
