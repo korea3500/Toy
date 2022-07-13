@@ -118,11 +118,10 @@ def queue(id): #음악 재생용 큐
         player.start()
         
 def owner_check(ctx) :
-    if '360476636786720768' == str(ctx.message.author.id) :
+    if '' == str(ctx.message.author.id) :
         return True
     else :
         return False
-    
 
 
 
@@ -177,11 +176,15 @@ async def on_ready():
 @app.event
 async def on_message(message) :
 #     print(message.content)
+    
+    
     await app.process_commands(message)
 
         
 @app.command(pass_context = True)
 async def 검색(ctx, char_id) :
+    
+    
     try :
         loawa_url = 'https://loawa.com/char/'
         html = requests.get(loawa_url + char_id)
@@ -191,6 +194,7 @@ async def 검색(ctx, char_id) :
     
     stat = []
     p = re.compile('[\d+]')
+    
     try :
         temp = list(stat_croll(soup))
         for idx, i in enumerate(temp) :
@@ -215,10 +219,10 @@ async def 검색(ctx, char_id) :
         embed.add_field(name = '\n==========================\n', value = '\u200b', inline = False)     
         embed.add_field(name="각인 효과", value = engraving(soup), inline = False)
         embed.set_footer(text="")
-        await ctx.send(embed=embed)
+        await ctx.send(ctx.message.author.mention, embed=embed)
         
     except :
-        await ctx.send('존재하지 않는 모험가입니다.')
+        await ctx.send(ctx.message.author.mention, '\n존재하지 않는 모험가입니다.')
     
 
 
@@ -233,6 +237,7 @@ async def 재생(ctx, *, char) :
         print(url, title)
         url = 'https://www.youtube.com' + url
         url1 = re.match('(https?://)?(www\.)?((youtube\.(com))/watch\?v=([-\w]+)|youtu\.be/([-\w]+))', url) #정규 표현식을 사용해 url 검사
+        await ctx.send(ctx.message.author.mention)
         if url1 == None:
             await ctx.send(embed=discord.Embed(title=":no_entry_sign: url을 제대로 입력해주세요.",colour = 0x2EFEF7, description = url1))
         else :
@@ -274,42 +279,47 @@ async def 노래끄기(ctx) :
 async def 삭제(ctx, char) :
     
 #     user = discord.utils.get(message.guild.members, name = name) NOT WORKING (TODO : get user information)
+    
     try :
         await ctx.message.channel.purge(limit = int(char))
 #         await ctx.send(user.mension + " " + char + "개의 메시지를 삭제했습니다.")
-        await ctx.send(char + "개의 메시지를 삭제했습니다.")
-    except ValueError:
-        await ctx.send("해당 명령어는 !삭제 {줄}로 사용 가능합니다.")
+        await ctx.send(ctx.message.author.mention + '\n' + char + "개의 메시지를 삭제했습니다.")
+
     except discord.errors.Forbidden :
-        await ctx.send("권한이 부족합니다. 관리자에게 문의하세요.")
+        await ctx.send(ctx.message.author.mention + "\n봇 권한이 부족합니다. 관리자에게 문의하세요.")
 
     
         
         
 @app.command(pass_context = True)
 async def 이모티콘(ctx, char) :
+    
+    
     dir_path = "C:/Users/kyeongmin/Desktop/labs/private/discord/images/로스트아크_환영해요_로아콘!/image/"
     if len(image_df[image_df['key'] == char]) > 0 :
         file_name = image_df[image_df['key'] == char]['path'].tolist()[0]
-#         print(file_name)
-        file = discord.File(dir_path + file_name, filename = char + ".png")
-        await ctx.message.channel.purge(limit = int(1))
-        await ctx.send(file = file)
+
+        file = discord.File(dir_path + file_name, filename = file_name)
+        
+#         await ctx.message.channel.purge(limit = int(1))
+        
+        await ctx.send(ctx.message.author.mention, file = file)
     else :
-        await ctx.send("현재는 사용할 수 없는 이모티콘입니다.")
+        await ctx.send(ctx.message.author.mention + "\n현재는 사용할 수 없는 이모티콘입니다.")
 
 @app.command(pass_context = True)
 async def 팁(ctx, char) :
+    
 
     dir_path = "C:/Users/kyeongmin/Desktop/labs/private/discord/images/팁/"
     if len(tip_df[tip_df['key'] == char]) > 0 :
         file_name = tip_df[tip_df['key'] == char]['path'].tolist()[0]
 
-        file = discord.File(dir_path + file_name, filename = char + ".png")
+        file = discord.File(dir_path + file_name, filename = file_name)
 
-        await ctx.send(file = file)
+        await ctx.send(ctx.message.author.mention, file = file)
     else :
-        await ctx.send("존재하지 않는 이미지입니다.")
+        await ctx.send(ctx.message.author.mention + "\n존재하지 않는 이미지입니다.")
 
 # @app.command(pass_context = True)
 # async def 고고학(ctx, char) :
@@ -325,22 +335,25 @@ async def 팁(ctx, char) :
         
 @app.command(pass_context = True)
 async def 각인계산기(ctx) :
+    
     url = 'https://loa.icepeng.com/imprinting'
-    await ctx.send(embed=discord.Embed(title = "icepeng 각인계산기", colour = 0x2EFEF7, description = url))
+    await ctx.send(ctx.message.author.mention, embed=discord.Embed(title = "icepeng 각인계산기", colour = 0x2EFEF7, description = url))
         
     
         
         
 @app.command(pass_context = True)
 async def 명령어(ctx, char) :   
+    
     url = 'https://korea3500.notion.site/Coffee-5bb06765136f49e39f645b1f61e37651'
     if "이모티콘" in char :
         
-        await ctx.send("작업 중")
+        await ctx.send(ctx.message.author.mention + "\n작업 중")
 
     
 @app.command(pass_context = True)
 async def 계산기(ctx, char) :
+    
     quadro_optimal_value = 0
     octa_optimal_value = 0
     discount_factor = 0.95
@@ -368,11 +381,12 @@ async def 계산기(ctx, char) :
     
 #     embed.set_footer(text="수식 오류 or 문의사항 발생 시 알려주시면 빠르게 수정하겠습니다")
     
-    await ctx.send(embed=embed)
+    await ctx.send(ctx.message.author.mention, embed=embed)
 
 @app.command(pass_context = True)
 async def 사사게(ctx, *, char) :
 #     print(char)
+    
     search_id = char.replace(' ', '+')
     
     inven_url = 'https://www.inven.co.kr/board/lostark/5355?query=list&p=1&sterm=&name=subject&keyword='
@@ -387,10 +401,11 @@ async def 사사게(ctx, *, char) :
         title_list.append(''.join(title.replace('    ', '').split('\n')))
         url_list.append(result[idx]['href'])
 #     print(title_list, url_list)
+    
     if len(title_list) == 1 :
         embed=discord.Embed(title="인벤 사사게 검색", url= inven_url + search_id, description="검색한 키워드 : " + char)
         embed.add_field(name = "검색 결과가 없습니다!", value = url_list[0], inline=False)
-        await ctx.send(embed=embed)
+        await ctx.send(ctx.message.author.mention, embed=embed)
     
     else :
         embed=discord.Embed(title="인벤 사사게 검색", url= inven_url + search_id, description="검색한 키워드 : " + char)
@@ -399,7 +414,7 @@ async def 사사게(ctx, *, char) :
             embed.add_field(name = title_list[idx], value = url_list[idx], inline=False)
 
     #     embed.set_footer(text = "add footer")
-        await ctx.send(embed=embed)
+        await ctx.send(ctx.message.author.mention, embed=embed)
         
         
 '''
@@ -431,7 +446,7 @@ async def 사사게(ctx, *, char) :
         
 @app.command(pass_context = True)
 async def server_name(ctx) :
-    await ctx.send(ctx.guild.name)\
+    await ctx.send(ctx.guild.name)
     
 @app.command(pass_context = True)
 async def server_owner(ctx) :
@@ -514,7 +529,7 @@ async def invite_link(ctx) :
 @app.command(pass_context = True)
 async def bot_invite_link(ctx) :
     if owner_check :
-        invite_link = ''
+        invite_link = 'https://discord.com/api/oauth2/authorize?client_id=922767127381934091&permissions=0&scope=bot'
         await ctx.send(invite_link)
     else :
         await ctx.send("Forbidden Error")
@@ -564,50 +579,46 @@ async def leave_guild(ctx, *, char) :
         
         
     
-
-    
-        
-        
-
-
-    
-
-
-    
 @명령어.error
 async def 명령어_error(ctx, error) :
+    
     url = 'https://korea3500.notion.site/Coffee-5bb06765136f49e39f645b1f61e37651'
-    await ctx.send(embed=discord.Embed(title="Coffee guide",colour = 0x2EFEF7, description = url))    
+    await ctx.send(ctx.message.author.mention, embed=discord.Embed(title="Coffee guide",colour = 0x2EFEF7, description = url))    
 
 @삭제.error
 async def 삭제_error(ctx, error) :
+    
     if isinstance(error, commands.MissingRequiredArgument) :
-        await ctx.send("해당 명령어는 !삭제 {줄}로 사용 가능합니다.")
+        await ctx.send(ctx.message.author.mention + "\n해당 명령어는 !삭제 {줄}로 사용 가능합니다.")
 
 @이모티콘.error
 async def 이모티콘_error(ctx, error):
+    
     if isinstance(error, commands.MissingRequiredArgument):
 #         await ctx.send("사용할 이모티콘의 이름을 입력 해주세요!")
-        await ctx.send(', '.join(image_df['key']))
+        await ctx.send(ctx.message.author.mention + '\n' +', '.join(image_df['key']))
         
         
 @팁.error
 async def 팁_error(ctx, error):
+    
     if isinstance(error, commands.MissingRequiredArgument):
         tip_listdir = os.listdir("C:/Users/kyeongmin/Desktop/labs/private/discord/images/팁")
-        await ctx.send("사용할 팁의 이름을 입력 해주세요! !팁 {팁}\n\n사용가능한 팁 : \n" + ', '.join(tip_df['key']))
+        await ctx.send(ctx.message.author.mention + "\n사용할 팁의 이름을 입력 해주세요! !팁 {팁}\n\n사용가능한 팁 : \n" + ', '.join(tip_df['key']))
         
 @계산기.error
 async def 계산기_error(ctx, error) :
+    
     if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("경매 금액을 입력해 주세요!")
+        await ctx.send(ctx.message.author.mention + "\n경매 금액을 입력해 주세요!")
     if isinstance(error, commands.CommandInvokeError) :
-        await ctx.send("경매 금액은 반드시 숫자여야 합니다.\nex) !계산기 6000")
+        await ctx.send(ctx.message.author.mention + "\n경매 금액은 반드시 숫자여야 합니다.\nex) !계산기 6000")
         
 @사사게.error
 async def 사사게_error(ctx, error) :
+    
     if isinstance(error, commands.MissingRequiredArgument) :
-        await ctx.send("검색 키워드를 입력해 주세요!\nex) !사사게 커피왜캐맛있음")
+        await ctx.send(ctx.message.author.mention + "\n검색 키워드를 입력해 주세요!\nex) !사사게 커피왜캐맛있음")
         
         
 # @app.error
@@ -615,6 +626,13 @@ async def 사사게_error(ctx, error) :
 #     url = 'https://korea3500.notion.site/Coffee-5bb06765136f49e39f645b1f61e37651'
 #     await ctx.send("등록되지 않은 명령어입니다. !help 를 확인해주세요!")
 #     await ctx.send(embed=discord.Embed(title="Coffee guide",colour = 0x2EFEF7, description = url))    
+    
+        
+        
 
-token = 'TOKEN'
+
+    
+token = ''
 app.run(token)
+
+    
